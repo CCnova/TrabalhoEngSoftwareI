@@ -14,6 +14,11 @@ public class BibliotecaFachada {
 	
 	public void realizarEmprestimo() {
 		System.out.println("Realizando Emprestimo");
+		/*se usuario tem reserva feite pro livro, a reserva é excluida e o emprestimo efetivado.
+		 *Ao final do procedimento o sistema deve emitir uma mensagem de sucesso ou insucesso, 
+		 * que mencione o nome do usuário e o título do livro. Se for uma mensagem de insucesso, 
+		 * ela deve também mencionar o motivo do insucesso.
+		*/
 	}
 	
 	public void realizarDevolucao() {
