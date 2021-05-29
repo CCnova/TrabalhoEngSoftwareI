@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BaseDeDados {
+public class BaseDeDados implements Subject {
 	private static BaseDeDados instancia;
 	private List<Usuario> usuarios;
 	private List<Livro> livros;
@@ -25,7 +25,7 @@ public class BaseDeDados {
 		usuarios = new ArrayList<Usuario>();
 		livros = new ArrayList<Livro>();
 		exemplares = new ArrayList<Exemplar>();
-		
+
 		usuarios.add(new AlunoGraduacao(123, "João da Silva"));
 		usuarios.add(new AlunoPosGraduacao(456, "Luiz Fernando Rodrigues"));
 		usuarios.add(new AlunoGraduacao(789, "Pedro Paulo"));
@@ -60,7 +60,7 @@ public class BaseDeDados {
 
 		for (Livro livro : livros) {
 			for (Exemplar exemplar : exemplares) {
-				if(livro.getCodigo() == exemplar.getCodigoLivro()) {
+				if (livro.getCodigo() == exemplar.getCodigoLivro()) {
 					livro.getExemplares().add(exemplar);
 				}
 			}
@@ -104,7 +104,7 @@ public class BaseDeDados {
 		boolean existeExemplar = !livro.getExemplares().isEmpty();
 		return existeExemplar;
 	}
-	
+
 	public boolean existeExemplarDisponivel(int codigoLivro) {
 		Livro livro = getLivroPorCodigo(codigoLivro);
 		for (Exemplar exemplar : livro.getExemplares()) {
@@ -115,11 +115,28 @@ public class BaseDeDados {
 		}
 		return false;
 	}
-	
+
 	public boolean checarUsuarioDevedor(int codigoUsuario) {
 		Usuario usuario = getUsuarioPorCodigo(codigoUsuario);
 		return usuario.isDevedor();
 	}
 
+	@Override
+	public void registerObserver(Observer observer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeObserver(Observer observer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifyObservers() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

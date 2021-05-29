@@ -31,16 +31,28 @@ public class BibliotecaFachada {
 
 	}
 
-	public void realizarDevolucao() {
-		System.out.println("Iniciando procedimento de devolucao");
+	public void realizarDevolucao(int codigoLivro, int codigoInutil) {
+		System.out.println("Iniciando procedimento de devolucao...");
 	}
 
-	public void realizarReserva() {
-		System.out.println("Iniciando procedimento de reserva");
+	public void realizarReserva(int codigoLivro, int codigoInutil) {
+		System.out.println("Iniciando procedimento de reserva...");
 	}
-
+	
+	public void realizarObservacao(int codigoLivro, int codigoInutil) {
+		System.out.println("Iniciando procedimento de observação...");
+	}
+	
 	public void realizarConsultaLivro(int codigoLivro, int codigoInutil) {
-		System.out.println("Iniciando consulta de dados do livro");
+		System.out.println("Iniciando consulta de dados do livro...");
+	}
+	
+	public void realizarConsultaUsuario(int codigoUsuario, int codigoInutil) {
+		System.out.println("Iniciando consulta de dados do usuário...");
+	}
+
+	public void realizarConsultaProfessor(int codigoUsuario, int codigoInutil) {
+		System.out.println("Iniciando consulta de notificações do professor...");
 	}
 
 }

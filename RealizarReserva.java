@@ -4,7 +4,7 @@ public class RealizarReserva implements Comando {
 
 	@Override
 	public void executar(int codigoLivro, int codigoInutil) {
-		BibliotecaFachada.obterInstancia().realizarReserva();
+		BibliotecaFachada.obterInstancia().realizarReserva(codigoLivro, codigoInutil);
 	}
 
 }

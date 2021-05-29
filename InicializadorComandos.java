@@ -10,7 +10,10 @@ public class InicializadorComandos {
 		comandos.put("emp", new RealizarEmprestimo());
 		comandos.put("res", new RealizarReserva());
 		comandos.put("dev", new RealizarDevolucao());
+		comandos.put("obs", new RealizarObservacao());
 		comandos.put("liv", new RealizarConsultaLivro());
+		comandos.put("usu", new RealizarConsultaUsuario());
+		comandos.put("ntf", new RealizarConsultaProfessor());
 		
 		return comandos;
 	}
