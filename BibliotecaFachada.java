@@ -3,33 +3,44 @@ package br.ufba.trabalho.biblioteca;
 public class BibliotecaFachada {
 	private static BibliotecaFachada instancia;
 
-	private BibliotecaFachada() {}
-	
+	private BibliotecaFachada() {
+	}
+
 	public static BibliotecaFachada obterInstancia() {
-		if(instancia == null) {
+		if (instancia == null) {
 			instancia = new BibliotecaFachada();
-		} 
+		}
 		return instancia;
 	}
-	
-	public void realizarEmprestimo() {
-		System.out.println("Realizando Emprestimo");
-		/*se usuario tem reserva feite pro livro, a reserva é excluida e o emprestimo efetivado.
-		 *Ao final do procedimento o sistema deve emitir uma mensagem de sucesso ou insucesso, 
-		 * que mencione o nome do usuário e o título do livro. Se for uma mensagem de insucesso, 
-		 * ela deve também mencionar o motivo do insucesso.
-		*/
+
+	public void realizarEmprestimo(int codigoUsuario, int codigoLivro) {
+		System.out.println("Iniciando procedimento de emprestimo");
+
+		Usuario usuario = BaseDeDados.obterInstancia().getUsuarioPorCodigo(codigoUsuario);
+//		Livro livro = BaseDeDados.obterInstancia().getLivroPorCodigo(codigoLivro);
+
+//		if (livroReservado.getCodigo() != codigoLivro) {
+//			System.out.println("Este livro não está reservado para você.");
+//		} else {
+//			System.out.println("Este livro foi reservado por você");
+//		}
+		if (usuario != null) {
+			usuario.fazerEmprestimo(codigoLivro);
+			return;
+		}
+
 	}
-	
+
 	public void realizarDevolucao() {
-		System.out.println("Realizando Devolucao");
+		System.out.println("Iniciando procedimento de devolucao");
 	}
-	
+
 	public void realizarReserva() {
-		System.out.println("Realizando Reserva");
+		System.out.println("Iniciando procedimento de reserva");
 	}
-	
-	public void realizarConsultaLivro() {
-		System.out.println("Consultando dados do livro");
+
+	public void realizarConsultaLivro(int codigoLivro, int codigoInutil) {
+		System.out.println("Iniciando consulta de dados do livro");
 	}
+
 }

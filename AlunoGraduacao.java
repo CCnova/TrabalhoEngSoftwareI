@@ -1,12 +1,24 @@
 package br.ufba.trabalho.biblioteca;
 
-public class AlunoGraduacao extends Usuario implements UsuarioAluno {
-	static int duracaoEmprestimoEmDias = 3;
+public class AlunoGraduacao extends UsuarioAluno {
+	int duracaoEmprestimoEmDias = 3;
+	int limiteDeEmprestimos = 3;
 
-	@Override
-	public void fazerReserva() {
-		// TODO Auto-generated method stub
-		
+	public AlunoGraduacao(int codigo, String nome) {
+		super(codigo, nome);
 	}
 
+	@Override
+	public void fazerReserva(int codigoLivro) {
+	}
+	
+	@Override
+	public int getLimiteDeEmprestimos() {
+		return this.limiteDeEmprestimos;
+	}
+
+	@Override
+	public int getDuracaoEmprestimoEmDias() {
+		return this.limiteDeEmprestimos;
+	}
 }
