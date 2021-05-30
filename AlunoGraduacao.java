@@ -9,10 +9,6 @@ public class AlunoGraduacao extends UsuarioAluno {
 	}
 
 	@Override
-	public void fazerReserva(int codigoLivro) {
-	}
-	
-	@Override
 	public int getLimiteDeEmprestimos() {
 		return this.limiteDeEmprestimos;
 	}

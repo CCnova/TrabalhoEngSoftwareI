@@ -4,6 +4,7 @@ public class Exemplar {
 	private int codigoExemplar;
 	private int codigoLivro;
 	private String status;
+	private int codUsuarioEmPosse;
 
 	public Exemplar(int codigoLivro, int codigoExemplar, String status) {
 		super();
@@ -34,6 +35,14 @@ public class Exemplar {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public int getCodUsuarioEmPosse() {
+		return codUsuarioEmPosse;
+	}
+
+	public void setCodUsuarioEmPosse(int codUsuarioEmPosse) {
+		this.codUsuarioEmPosse = codUsuarioEmPosse;
 	}
 
 }

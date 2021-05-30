@@ -13,17 +13,23 @@ public class BibliotecaFachada {
 		return instancia;
 	}
 
+	public void realizarReserva(int codigoUsuario, int codigoLivro) {
+		System.out.println("Iniciando procedimento de reserva...");
+
+		Usuario usuario = BaseDeDados.obterInstancia().getUsuarioPorCodigo(codigoUsuario);
+
+		if (usuario != null) {
+			usuario.fazerReserva(codigoLivro);
+			return;
+		}
+
+	}
+
 	public void realizarEmprestimo(int codigoUsuario, int codigoLivro) {
 		System.out.println("Iniciando procedimento de emprestimo");
 
 		Usuario usuario = BaseDeDados.obterInstancia().getUsuarioPorCodigo(codigoUsuario);
-//		Livro livro = BaseDeDados.obterInstancia().getLivroPorCodigo(codigoLivro);
 
-//		if (livroReservado.getCodigo() != codigoLivro) {
-//			System.out.println("Este livro n„o est· reservado para vocÍ.");
-//		} else {
-//			System.out.println("Este livro foi reservado por vocÍ");
-//		}
 		if (usuario != null) {
 			usuario.fazerEmprestimo(codigoLivro);
 			return;
@@ -31,28 +37,73 @@ public class BibliotecaFachada {
 
 	}
 
-	public void realizarDevolucao(int codigoLivro, int codigoInutil) {
+	public void realizarDevolucao(int codigoUsuario, int codigoLivro) {
 		System.out.println("Iniciando procedimento de devolucao...");
+
+		Usuario usuario = BaseDeDados.obterInstancia().getUsuarioPorCodigo(codigoUsuario);
+
+		if (usuario != null) {
+			usuario.fazerDevolucao(codigoLivro);
+			return;
+		}
+
 	}
 
-	public void realizarReserva(int codigoLivro, int codigoInutil) {
-		System.out.println("Iniciando procedimento de reserva...");
+	public void realizarObservacao(int codigoUsuario, int codigoLivro) {
+		System.out.println("Iniciando procedimento de observa√ß√£o...");
+
+		Usuario usuario = BaseDeDados.obterInstancia().getUsuarioPorCodigo(codigoUsuario);
+		Livro livro = BaseDeDados.obterInstancia().getLivroPorCodigo(codigoLivro);
+
+		if (usuario != null) {
+			livro.registerObserver((Observer) usuario);
+			return;
+		}
 	}
-	
-	public void realizarObservacao(int codigoLivro, int codigoInutil) {
-		System.out.println("Iniciando procedimento de observaÁ„o...");
-	}
-	
-	public void realizarConsultaLivro(int codigoLivro, int codigoInutil) {
+
+	public void realizarConsultaLivro(int codigoLivro) {
 		System.out.println("Iniciando consulta de dados do livro...");
-	}
-	
-	public void realizarConsultaUsuario(int codigoUsuario, int codigoInutil) {
-		System.out.println("Iniciando consulta de dados do usu·rio...");
+		BaseDeDados dados = BaseDeDados.obterInstancia();
+		Livro livro = dados.getLivroPorCodigo(codigoLivro);
+		Usuario usuario;
+
+		System.out.println("T√≠tulo: " + livro.getTitulo() + "\nQuantidade de Reservas: " + livro.getReservas().size());
+		if (livro.getReservas().size() > 0) {
+			System.out.println("-Reservas:");
+			for (Reserva reserva : livro.getReservas()) {
+				System.out.println("--Usu√°rio: " + reserva.getUsuario().getNome());
+			}
+		}
+
+		System.out.println();
+		System.out.println("-Exemplares: ");
+		for (Exemplar exemplar : livro.getExemplares()) {
+			System.out.println();
+			System.out.println(
+					"--C√≥digo do exemplar: " + exemplar.getCodigoExemplar() + "\n--Status: " + exemplar.getStatus());
+			if (exemplar.getStatus().equalsIgnoreCase("Emprestado")) {
+				usuario = dados.getUsuarioPorCodigo(exemplar.getCodUsuarioEmPosse());
+				System.out.println("--Usu√°rio em posse: " + usuario.getNome());
+
+				// percorre os emprestimos do usuario para achar qual corresponde livro do
+				// exemplar
+				for (Emprestimo emprestimo : usuario.getEmprestimos()) {
+					if (emprestimo.getLivro().getCodigo() == exemplar.getCodigoLivro()) {
+						System.out.println("--Data do emprestimo: " + emprestimo.getData() + "\n--Data de devolu√ß√£o: "
+								+ emprestimo.getDataDeDevolu√ß√£o());
+					}
+				}
+			}
+		}
+
 	}
 
-	public void realizarConsultaProfessor(int codigoUsuario, int codigoInutil) {
-		System.out.println("Iniciando consulta de notificaÁıes do professor...");
+	public void realizarConsultaUsuario(int codigoUsuario) {
+		System.out.println("Iniciando consulta de dados do usu√°rio...");
+	}
+
+	public void realizarConsultaProfessor(int codigoUsuario) {
+		System.out.println("Iniciando consulta de notifica√ß√µes do professor...");
 	}
 
 }

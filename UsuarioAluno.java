@@ -1,77 +1,92 @@
 package br.ufba.trabalho.biblioteca;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+//import java.util.Date;
 
 public abstract class UsuarioAluno extends Usuario {
-	private List<Reserva> reservas;
 	private int limiteDeEmprestimos;
-	BaseDeDados dados = BaseDeDados.obterInstancia();
 
 	public UsuarioAluno(int codigo, String nome) {
 		super(codigo, nome);
-		reservas = new ArrayList<Reserva>();
+		setReservas(new ArrayList<Reserva>());
 	}
 
-	void fazerReserva(int codigoLivro) {
-		Livro livro = BaseDeDados.obterInstancia().getLivroPorCodigo(codigoLivro);
-		reservas.add(new Reserva(livro));
-	}
-
+	@Override
 	void fazerEmprestimo(int codigoLivro) {
+//		BaseDeDados dados = BaseDeDados.obterInstancia();
 		if (!possoFazerEmprestimo(codigoLivro)) {
-			System.out.println("Seu emprÈstimo falhou.");
+			System.out.println("Seu empr√©stimo falhou.");
 			return;
 		}
 
-		Emprestimo emprestimo = new Emprestimo(dados.getLivroPorCodigo(codigoLivro), new Date());
-		dados.getUsuarioPorCodigo(this.getCodigo()).getEmprestimos().add(emprestimo);
-		System.out.println("Livro: " + dados.getLivroPorCodigo(codigoLivro).getTitulo() + ". Emprestado com sucesso!");
+		super.fazerEmprestimo(codigoLivro);
+
+//		Livro livro = dados.getLivroPorCodigo(codigoLivro);
+//		Emprestimo emprestimo = new Emprestimo(this, livro, new Date());
+//		
+//		this.getEmprestimos().add(emprestimo);
+//
+//		for (Exemplar exemplar : dados.getExemplares()) {
+//			if (exemplar.getCodigoLivro() == codigoLivro && exemplar.getStatus().equals("Dispon√≠vel")) {
+//				exemplar.setStatus("Emprestado");
+//				exemplar.setCodUsuarioEmPosse(this.getCodigo());
+//				break;
+//			}
+//		}
+//		
+//		this.getReservas().removeIf(e -> e.getLivro().getCodigo() == codigoLivro);
+//		livro.getReservas().removeIf(e -> e.getLivro().getCodigo() == codigoLivro);
+//
+//		System.out.println("Livro: " + dados.getLivroPorCodigo(codigoLivro).getTitulo() + ". Emprestado com sucesso!");
 
 	}
 
 	@Override
 	boolean possoFazerEmprestimo(int codigoLivro) {
+		BaseDeDados dados = BaseDeDados.obterInstancia();
 
 		if (!dados.existeExemplarDoLivro(codigoLivro)) {
-			System.out.println("N„o h· exemplares deste livro na biblioteca.");
+			System.out.println("N√£o h√° exemplares deste livro na biblioteca.");
 			return false;
 		}
 
 		if (!dados.existeExemplarDisponivel(codigoLivro)) {
-			System.out.println("N„o h· exemplares deste livro disponÌveis no momento");
+			System.out.println("N√£o h√° exemplares deste livro dispon√≠veis no momento.");
 			return false;
 		}
 
 		if (dados.checarUsuarioDevedor(this.getCodigo())) {
-			System.out.println("O usu·rio n„o pode fazer emprÈstimo pois est· devendo livro em atraso");
+			System.out.println("O usu√°rio n√£o pode fazer empr√©stimo pois est√° devendo livro em atraso.");
 			return false;
 		}
 
 		if (this.getLimiteDeEmprestimos() <= this.getEmprestimos().size()) {
 			System.out
-					.println("O usu·rio n„o pode fazer emprÈstimo pois atingiu o limite de emprÈstimos. Seu limite È: "
+					.println("O usu√°rio n√£o pode fazer empr√©stimo pois atingiu o limite de empr√©stimos. Seu limite √©: "
 							+ this.getLimiteDeEmprestimos());
 			return false;
 		}
 
 		for (Emprestimo emprestimo : this.getEmprestimos()) {
 			if (emprestimo.getLivro().getCodigo() == codigoLivro) {
-				System.out.println("O usu·rio n„o pode fazer emprÈstimo pois j· possui um emprÈstimo deste livro");
+				System.out
+						.println("O usu√°rio n√£o pode fazer este empr√©stimo pois j√° possui um empr√©stimo deste livro.");
 				return false;
 			}
 		}
 
+		int qntReservasLivro = dados.getLivroPorCodigo(codigoLivro).getReservas().size();
+		int qntExemplaresLivro = dados.getLivroPorCodigo(codigoLivro).getExemplares().size();
+
+		if (qntReservasLivro >= qntExemplaresLivro) {
+			if(!super.estaReservado(codigoLivro)){
+				System.out
+				.println("O usu√°rio n√£o pode fazer empr√©stimo deste livro pois todos exemplares est√£o reservados.");
+				return false;				
+			}
+		}
+
 		return true;
-	}
-
-	public List<Reserva> getReservas() {
-		return reservas;
-	}
-
-	public void setReservas(List<Reserva> reservas) {
-		this.reservas = reservas;
 	}
 
 	public int getLimiteDeEmprestimos() {
@@ -82,6 +97,4 @@ public abstract class UsuarioAluno extends Usuario {
 		this.limiteDeEmprestimos = limiteDeEmprestimos;
 	}
 
-	
-	
 }
