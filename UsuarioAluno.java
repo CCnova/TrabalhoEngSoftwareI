@@ -13,32 +13,12 @@ public abstract class UsuarioAluno extends Usuario {
 
 	@Override
 	void fazerEmprestimo(int codigoLivro) {
-//		BaseDeDados dados = BaseDeDados.obterInstancia();
 		if (!possoFazerEmprestimo(codigoLivro)) {
 			System.out.println("Seu empréstimo falhou.");
 			return;
 		}
 
 		super.fazerEmprestimo(codigoLivro);
-
-//		Livro livro = dados.getLivroPorCodigo(codigoLivro);
-//		Emprestimo emprestimo = new Emprestimo(this, livro, new Date());
-//		
-//		this.getEmprestimos().add(emprestimo);
-//
-//		for (Exemplar exemplar : dados.getExemplares()) {
-//			if (exemplar.getCodigoLivro() == codigoLivro && exemplar.getStatus().equals("Disponível")) {
-//				exemplar.setStatus("Emprestado");
-//				exemplar.setCodUsuarioEmPosse(this.getCodigo());
-//				break;
-//			}
-//		}
-//		
-//		this.getReservas().removeIf(e -> e.getLivro().getCodigo() == codigoLivro);
-//		livro.getReservas().removeIf(e -> e.getLivro().getCodigo() == codigoLivro);
-//
-//		System.out.println("Livro: " + dados.getLivroPorCodigo(codigoLivro).getTitulo() + ". Emprestado com sucesso!");
-
 	}
 
 	@Override
@@ -79,10 +59,10 @@ public abstract class UsuarioAluno extends Usuario {
 		int qntExemplaresLivro = dados.getLivroPorCodigo(codigoLivro).getExemplares().size();
 
 		if (qntReservasLivro >= qntExemplaresLivro) {
-			if(!super.estaReservado(codigoLivro)){
-				System.out
-				.println("O usuário não pode fazer empréstimo deste livro pois todos exemplares estão reservados.");
-				return false;				
+			if (!super.estaReservado(codigoLivro)) {
+				System.out.println(
+						"O usuário não pode fazer empréstimo deste livro pois todos exemplares estão reservados.");
+				return false;
 			}
 		}
 

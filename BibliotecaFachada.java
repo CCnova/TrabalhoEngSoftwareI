@@ -55,19 +55,24 @@ public class BibliotecaFachada {
 		Usuario usuario = BaseDeDados.obterInstancia().getUsuarioPorCodigo(codigoUsuario);
 		Livro livro = BaseDeDados.obterInstancia().getLivroPorCodigo(codigoLivro);
 
-		if (usuario != null) {
+		if (usuario != null && livro != null) {
 			livro.registerObserver((Observer) usuario);
+			System.out.println("Observador registrado com sucesso!");
 			return;
 		}
+		
+		System.out.println("Não foi possível registrar o observador.");
 	}
 
 	public void realizarConsultaLivro(int codigoLivro) {
 		System.out.println("Iniciando consulta de dados do livro...");
+
 		BaseDeDados dados = BaseDeDados.obterInstancia();
 		Livro livro = dados.getLivroPorCodigo(codigoLivro);
 		Usuario usuario;
 
-		System.out.println("Título: " + livro.getTitulo() + "\nQuantidade de Reservas: " + livro.getReservas().size());
+		System.out.println(
+				"\n-Título: " + livro.getTitulo() + "\n-Quantidade de Reservas: " + livro.getReservas().size());
 		if (livro.getReservas().size() > 0) {
 			System.out.println("-Reservas:");
 			for (Reserva reserva : livro.getReservas()) {
@@ -75,10 +80,8 @@ public class BibliotecaFachada {
 			}
 		}
 
-		System.out.println();
-		System.out.println("-Exemplares: ");
+		System.out.println("\n-Exemplares: ");
 		for (Exemplar exemplar : livro.getExemplares()) {
-			System.out.println();
 			System.out.println(
 					"--Código do exemplar: " + exemplar.getCodigoExemplar() + "\n--Status: " + exemplar.getStatus());
 			if (exemplar.getStatus().equalsIgnoreCase("Emprestado")) {
@@ -90,7 +93,7 @@ public class BibliotecaFachada {
 				for (Emprestimo emprestimo : usuario.getEmprestimos()) {
 					if (emprestimo.getLivro().getCodigo() == exemplar.getCodigoLivro()) {
 						System.out.println("--Data do emprestimo: " + emprestimo.getData() + "\n--Data de devolução: "
-								+ emprestimo.getDataDeDevolução());
+								+ emprestimo.getDataLimite());
 					}
 				}
 			}
@@ -100,10 +103,43 @@ public class BibliotecaFachada {
 
 	public void realizarConsultaUsuario(int codigoUsuario) {
 		System.out.println("Iniciando consulta de dados do usuário...");
+
+		BaseDeDados dados = BaseDeDados.obterInstancia();
+		Usuario usuario = dados.getUsuarioPorCodigo(codigoUsuario);
+
+		System.out.println("\nUsuário: " + usuario.getNome());
+
+		System.out.println("\n-Empréstimos correntes:");
+		for (Emprestimo emprestimo : usuario.getEmprestimos()) {
+			System.out.println("\n--Título: " + emprestimo.getLivro().getTitulo() + "\n--Data do empréstimo: "
+					+ emprestimo.getData() + "\n--Status: " + emprestimo.getStatus() + "\n--Data limite: "
+					+ emprestimo.getDataLimite());
+		}
+		System.out.println("\n-Empréstimos passados:");
+		for (Emprestimo emprestimo : usuario.getHistoricoEmprestimos()) {
+			System.out.println("\n--Título: " + emprestimo.getLivro().getTitulo() + "\n--Data do empréstimo: "
+					+ emprestimo.getData() + "\n--Status: " + emprestimo.getStatus() + "\n--Data da devolução: "
+					+ emprestimo.getDataDevolucao());
+		}
+		System.out.println("\n-Reservas correntes:");
+		for (Reserva reserva : usuario.getReservas()) {
+			System.out.println(
+					"\n--Título: " + reserva.getLivro().getTitulo() + "\n--Data do empréstimo: " + reserva.getData());
+		}
+		System.out.println("\n-Reservas passadas:");
+		for (Reserva reserva : usuario.getHistoricoReservas()) {
+			System.out.println(
+					"\n--Título: " + reserva.getLivro().getTitulo() + "\n--Data do empréstimo: " + reserva.getData());
+		}
+
 	}
 
-	public void realizarConsultaProfessor(int codigoUsuario) {
+	public void realizarConsultaSuperior(int codigoUsuario) {
 		System.out.println("Iniciando consulta de notificações do professor...");
+		BaseDeDados dados = BaseDeDados.obterInstancia();
+		UsuarioSuperior usuario = (UsuarioSuperior) dados.getUsuarioPorCodigo(codigoUsuario);
+
+		System.out.println("\nQuantidade de vezes notificado: " + usuario.getVezesNotificado());
 	}
 
 }

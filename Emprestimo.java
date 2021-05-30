@@ -6,18 +6,20 @@ import java.util.Date;
 public class Emprestimo {
 	private Livro livro;
 	private Date data;
-	private Date dataDeDevolução;
+	private Date dataLimite;
+	private Date dataDevolucao;
 	private Usuario usuario;
+	private String status;
 	private Calendar c = Calendar.getInstance();
 
-	public Emprestimo(Usuario usuario, Livro livro, Date data) {
+	public Emprestimo(Usuario usuario, Livro livro, Date data, String status) {
 		this.usuario = usuario;
 		this.livro = livro;
 		this.data = data;
-		
+		this.status = status;
 		c.setTime(data);
 		c.add(Calendar.DATE, usuario.getDuracaoEmprestimoEmDias());
-		this.dataDeDevolução = c.getTime();
+		this.dataLimite = c.getTime();
 	}
 
 	public Livro getLivro() {
@@ -36,12 +38,12 @@ public class Emprestimo {
 		this.data = data;
 	}
 
-	public Date getDataDeDevolução() {
-		return dataDeDevolução;
+	public Date getDataLimite() {
+		return dataLimite;
 	}
 
-	public void setDataDeDevolução(Date dataDeDevolução) {
-		this.dataDeDevolução = dataDeDevolução;
+	public void setDataLimite(Date dataLimite) {
+		this.dataLimite = dataLimite;
 	}
 
 	public Usuario getUsuario() {
@@ -50,6 +52,22 @@ public class Emprestimo {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public Date getDataDevolucao() {
+		return dataDevolucao;
+	}
+
+	public void setDataDevolucao(Date dataDevolucao) {
+		this.dataDevolucao = dataDevolucao;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

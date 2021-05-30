@@ -13,7 +13,7 @@ public class InicializadorComandos {
 		comandos.put("obs", new RealizarObservacao());
 		comandos.put("liv", new RealizarConsultaLivro());
 		comandos.put("usu", new RealizarConsultaUsuario());
-		comandos.put("ntf", new RealizarConsultaProfessor());
+		comandos.put("ntf", new RealizarConsultaSuperior());
 		
 		return comandos;
 	}

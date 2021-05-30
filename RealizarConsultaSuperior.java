@@ -1,10 +1,10 @@
 package br.ufba.trabalho.biblioteca;
 
-public class RealizarConsultaProfessor implements Comando {
+public class RealizarConsultaSuperior implements Comando {
 
 	@Override
 	public void executar(int codigoUsuario) {
-		BibliotecaFachada.obterInstancia().realizarConsultaProfessor(codigoUsuario);
+		BibliotecaFachada.obterInstancia().realizarConsultaSuperior(codigoUsuario);
 	}
 
 	@Override

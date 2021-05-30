@@ -32,11 +32,10 @@ public abstract class Usuario {
 			System.out.println("Sua reserva falhou.");
 			return;
 		}
-		Reserva reserva = new Reserva(livro, this);
+		Reserva reserva = new Reserva(livro, this, new Date());
 
 		this.getReservas().add(reserva);
-		this.getHistoricoReservas().add(reserva);
-		livro.getReservas().add(reserva);
+		livro.adicionarReserva(reserva);
 
 		System.out.println("Reserva feita com Sucesso! Usuário: " + this.getNome() + " | Livro: " + livro.getTitulo());
 	}
@@ -64,12 +63,10 @@ public abstract class Usuario {
 	void fazerEmprestimo(int codigoLivro) {
 		BaseDeDados dados = BaseDeDados.obterInstancia();
 		Livro livro = dados.getLivroPorCodigo(codigoLivro);
-		Emprestimo emprestimo = new Emprestimo(this, livro, new Date());
-		int indexReservasUsuario = -1;
-		int indexReservasLivro = -1;
+		Emprestimo emprestimo = new Emprestimo(this, livro, new Date(), "Em Curso");
+		int indexReserva = -1;
 
 		this.getEmprestimos().add(emprestimo);
-		this.getHistoricoEmprestimos().add(emprestimo);
 
 		for (Exemplar exemplar : dados.getExemplares()) {
 			if (exemplar.getCodigoLivro() == codigoLivro && exemplar.getStatus().equals("Disponível")) {
@@ -85,20 +82,18 @@ public abstract class Usuario {
 			return;
 		}
 
+		System.out.println("O usuário possui reserva para este livro.");
+
 		for (int i = 0; i < this.getReservas().size(); i++) {
 			if (this.getReservas().get(i).getLivro().getCodigo() == codigoLivro) {
-				indexReservasUsuario = i;
-			}
-		}
-		this.getReservas().remove(indexReservasUsuario);
-
-		for (int i = 0; i < livro.getReservas().size(); i++) {
-			if (livro.getReservas().get(i).getUsuario().getCodigo() == this.codigo) {
-				indexReservasLivro = i;
+				indexReserva = i;
 			}
 		}
 
-		livro.getReservas().remove(indexReservasLivro);
+		Reserva reserva = this.getReservas().remove(indexReserva);
+		this.getHistoricoReservas().add(reserva);
+
+		livro.getReservas().remove(reserva);
 
 		System.out.println("Livro: " + dados.getLivroPorCodigo(codigoLivro).getTitulo() + ". Emprestado com sucesso!");
 	}
@@ -110,7 +105,6 @@ public abstract class Usuario {
 	boolean estaReservado(int codigoLivro) {
 		for (Reserva reserva : this.getReservas()) {
 			if (reserva.getLivro().getCodigo() == codigoLivro) {
-				System.out.println("O usuário possui reserva para este livro.");
 				return true;
 			}
 		}
@@ -119,6 +113,7 @@ public abstract class Usuario {
 
 	void fazerDevolucao(int codigoLivro) {
 		BaseDeDados dados = BaseDeDados.obterInstancia();
+		int indexEmprestimo = -1;
 
 		if (!possoFazerDevolucao(codigoLivro)) {
 			System.out.println("Sua devolução falhou.");
@@ -132,7 +127,16 @@ public abstract class Usuario {
 			}
 		}
 
-		this.getEmprestimos().removeIf(e -> e.getLivro().getCodigo() == codigoLivro);
+		for (int i = 0; i < this.getEmprestimos().size(); i++) {
+			if (this.getEmprestimos().get(i).getLivro().getCodigo() == codigoLivro) {
+				indexEmprestimo = i;
+			}
+		}
+
+		Emprestimo emprestimo = this.getEmprestimos().remove(indexEmprestimo);
+		emprestimo.setStatus("Finalizado");
+		this.getHistoricoEmprestimos().add(emprestimo);
+
 		System.out.println("Livro: " + dados.getLivroPorCodigo(codigoLivro).getTitulo() + ". Devolvido com sucesso!");
 	}
 

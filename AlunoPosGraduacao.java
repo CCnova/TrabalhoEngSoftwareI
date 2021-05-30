@@ -1,8 +1,8 @@
 package br.ufba.trabalho.biblioteca;
 
 public class AlunoPosGraduacao extends UsuarioAluno {
-	int duracaoEmprestimoEmDias = 4;
-	int limiteDeEmprestimos = 4;
+	private int duracaoEmprestimoEmDias = 4;
+	private int limiteDeEmprestimos = 4;
 
 	public AlunoPosGraduacao(int codigo, String nome) {
 		super(codigo, nome);
@@ -15,6 +15,6 @@ public class AlunoPosGraduacao extends UsuarioAluno {
 
 	@Override
 	public int getDuracaoEmprestimoEmDias() {
-		return this.limiteDeEmprestimos;
+		return this.duracaoEmprestimoEmDias;
 	}
 }
